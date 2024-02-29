@@ -9,8 +9,7 @@ import Foundation
 
 struct SignUpModel {
     let signUpText: String = "Sign Up"
-    let alreadyHaveAnAccountText: String = "Already have an account?"
-    let loginButtonText: String = "Login"
+    let alreadyHaveAnAccountText: String = "Already have an account? Login"
     let nameText: String = "Name"
     let namePlaceHolderText: String = "Enter your name"
     let emailText: String = "Email"

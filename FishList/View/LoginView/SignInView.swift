@@ -76,7 +76,7 @@ class SignInView: UIViewController {
         welcomeTextLabel.translatesAutoresizingMaskIntoConstraints = false
         welcomeTextLabel.text = signInViewModel.model.welcomeText
         welcomeTextLabel.textColor = .black
-        welcomeTextLabel.font = Theme.welcomeTextFontBold
+        welcomeTextLabel.font = Theme.titleFontBold
         view.addSubview(welcomeTextLabel)
         
         welcomeTextLabel.snp.makeConstraints { make in
@@ -90,6 +90,7 @@ class SignInView: UIViewController {
         emailTextLabel.translatesAutoresizingMaskIntoConstraints = false
         emailTextLabel.text = signInViewModel.model.emailText
         emailTextLabel.textColor = .black
+        emailTextLabel.font = Theme.bodyFontBold
         view.addSubview(emailTextLabel)
         
         emailTextLabel.snp.makeConstraints { make in
@@ -126,6 +127,7 @@ class SignInView: UIViewController {
         passwordTextLabel.translatesAutoresizingMaskIntoConstraints = false
         passwordTextLabel.text = signInViewModel.model.passwordText
         passwordTextLabel.textColor = .black
+        passwordTextLabel.font = Theme.bodyFontBold
         view.addSubview(passwordTextLabel)
         
         passwordTextLabel.snp.makeConstraints { make in
@@ -239,7 +241,6 @@ class SignInView: UIViewController {
     //SignUp Button Tapped
     @objc func signUpTapped() {
         signInViewModel.signUpButtonTapped()
-        signInViewModel.navigateToPage(viewController: SignUpView())
     }
 }
 

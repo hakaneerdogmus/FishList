@@ -8,6 +8,8 @@
 import UIKit
 
 class Theme {
+    ///Top Offset 50
+    static let topOffset50 = 50
     ///stackView Spacing 5
     static let spacing = 5.0
     ///Button Corner Radius 25
@@ -20,10 +22,12 @@ class Theme {
     static let layerBorderWidth = 1.0
     ///layerCornerRadius 10
     static let layerCornerRadius = 10.0
-    ///FontBold 50
-    static let welcomeTextFontBold = UIFont.boldFont()
+    ///FontTitleBold 50
+    static let titleFontBold = UIFont.boldTitleFont()
     /// Button Tittle Font
     static let buttonTittleFont = UIFont.buttonTitleFont()
+    ///FontBodyBold 20
+    static let bodyFontBold = UIFont.boldBodyFont()
     /// offset 30
     static let leadingOffset = 30
     /// offset 30
@@ -70,8 +74,11 @@ class Theme {
 
 
 extension UIFont {
-    static func boldFont() -> UIFont {
+    static func boldTitleFont() -> UIFont {
         return UIFont.boldSystemFont(ofSize: 50)
+    }
+    static func boldBodyFont() -> UIFont {
+        return UIFont.boldSystemFont(ofSize: 20)
     }
     static func buttonTitleFont() -> UIFont {
         return UIFont.systemFont(ofSize: 20)
