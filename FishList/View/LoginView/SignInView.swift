@@ -7,21 +7,24 @@
 
 import UIKit
 import SnapKit
+import GoogleSignIn
+import GoogleSignInSwift
 
-class SignInView: UIViewController {
+class SignInView: UIViewController, UITextFieldDelegate {
     
     private var signInViewModel: SignInViewModel!
     
     private var imageView: UIImageView!
     private var welcomeTextLabel: UILabel!
     private var emailTextLabel: UILabel!
-    private var emailTextField: UITextField!
+    var emailTextField: UITextField!
     private var passwordTextLabel: UILabel!
-    private var passwordTextField: UITextField!
+    var passwordTextField: UITextField!
     var showPasswordButton: UIButton!
     private var forgotPasswordButton: UIButton!
     private var loginButton: UIButton!
     private var accountTextLabel: UILabel!
+    private var googleSignInButton: UIButton!
     
     init() {
         super.init(nibName: nil, bundle: nil)
@@ -34,9 +37,10 @@ class SignInView: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
-        
         signInViewModel.viewDidLoad()
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        view.addGestureRecognizer(tapGesture)
     }
     
     override func viewDidLayoutSubviews() {
@@ -47,6 +51,10 @@ class SignInView: UIViewController {
 
         // Layer'a maskeyi uygula
         imageView.layer.mask = maskLayer
+    }
+    // UITapGestureRecognizer tarafından çağrılacak fonksiyon
+    @objc func dismissKeyboard() {
+        view.endEditing(true)
     }
     
     
@@ -112,6 +120,9 @@ class SignInView: UIViewController {
         emailTextField.textAlignment = .left
         emailTextField.leftView = Theme.leftPaddingView(textFieldHeight: emailTextField.frame.height)
         emailTextField.leftViewMode = .always
+        emailTextField.delegate = self
+        emailTextField.returnKeyType = .next
+        emailTextField.autocapitalizationType = .none
         view.addSubview(emailTextField)
         
         emailTextField.snp.makeConstraints { make in
@@ -149,6 +160,8 @@ class SignInView: UIViewController {
         passwordTextField.textAlignment = .left
         passwordTextField.leftView = Theme.leftPaddingView(textFieldHeight: passwordTextField.frame.height)
         passwordTextField.leftViewMode = .always
+        passwordTextField.delegate = self
+        passwordTextField.returnKeyType = .done
         view.addSubview(passwordTextField)
         
         passwordTextField.snp.makeConstraints { make in
@@ -241,6 +254,37 @@ class SignInView: UIViewController {
     //SignUp Button Tapped
     @objc func signUpTapped() {
         signInViewModel.signUpButtonTapped()
+        }
+    //Google SignIn
+    func configureGoogleSignIn() {
+        googleSignInButton = UIButton(frame: .zero)
+        googleSignInButton.setTitle("Google", for: .normal)
+        googleSignInButton.addTarget(self, action: #selector(googleSignInButtonTapped), for: .touchUpInside)
+        googleSignInButton.backgroundColor = .blue
+        view.addSubview(googleSignInButton)
+        
+        googleSignInButton.snp.makeConstraints { make in
+            make.top.equalTo(accountTextLabel.snp.bottom).offset(Theme.topOffset10)
+            make.leading.equalTo(Theme.leadingOffset)
+            make.trailing.equalTo(-Theme.leadingOffset)
+        }
     }
+    //google sign up button tapped
+    @objc func googleSignInButtonTapped() {
+        signInViewModel.googleSignInButtonTapped()
+    }
+    
+    //Text Field Return type
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+            switch textField {
+            case emailTextField:
+                passwordTextField.becomeFirstResponder()
+            case passwordTextField:
+                passwordTextField.resignFirstResponder()
+            default:
+                break
+            }
+            return true
+        }
 }
 

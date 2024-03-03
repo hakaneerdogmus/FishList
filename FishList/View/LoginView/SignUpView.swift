@@ -8,18 +8,18 @@
 import UIKit
 import SnapKit
 
-class SignUpView: UIViewController {
-
+class SignUpView: UIViewController, UITextFieldDelegate {
+    
     private var signUpViewModel: SignUpViewModel!
     
     private var signUpTextLabel: UILabel!
     private var alreadyHaveAnAccountLabel: UILabel!
     private var nameTextLabel: UILabel!
-    private var nameTextField: UITextField!
+    var nameTextField: UITextField!
     private var emailTextLabel: UILabel!
-    private var emailTextField: UITextField!
+    var emailTextField: UITextField!
     private var passwordTextLabel: UILabel!
-    private var passwordTextField: UITextField!
+    var passwordTextField: UITextField!
     var showPasswordButton: UIButton!
     private var signUpButton: UIButton!
     private var privacyLabel: UILabel!
@@ -36,7 +36,29 @@ class SignUpView: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         signUpViewModel.viewDidLoad()
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        view.addGestureRecognizer(tapGesture)
     }
+    // UITapGestureRecognizer tarafından çağrılacak fonksiyon
+    @objc func dismissKeyboard() {
+        view.endEditing(true)
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+            switch textField {
+            case nameTextField:
+                emailTextField.becomeFirstResponder()
+            case emailTextField:
+                passwordTextField.becomeFirstResponder()
+            case passwordTextField:
+                passwordTextField.resignFirstResponder()
+            default:
+                break
+            }
+            return true
+        }
+    
+    
     //Back graound Color
     func gradientColor(startColor: UIColor, endColor: UIColor) {
         let gradientLayer = Theme.gradientLayerColor(startColor: startColor, endColor: endColor)
@@ -109,6 +131,8 @@ class SignUpView: UIViewController {
         nameTextField.textAlignment = .left
         nameTextField.leftView = Theme.leftPaddingView(textFieldHeight: nameTextField.frame.height)
         nameTextField.leftViewMode = .always
+        nameTextField.returnKeyType = .next
+        nameTextField.delegate = self
         view.addSubview(nameTextField)
         
         nameTextField.snp.makeConstraints { make in
@@ -144,7 +168,10 @@ class SignUpView: UIViewController {
         emailTextField.textColor = .black
         emailTextField.textAlignment = .left
         emailTextField.leftView = Theme.leftPaddingView(textFieldHeight: emailTextField.frame.height)
+        emailTextField.autocapitalizationType = .none
         emailTextField.leftViewMode = .always
+        emailTextField.returnKeyType = .next
+        emailTextField.delegate = self
         view.addSubview(emailTextField)
         
         emailTextField.snp.makeConstraints { make in
@@ -181,6 +208,8 @@ class SignUpView: UIViewController {
         passwordTextField.textAlignment = .left
         passwordTextField.leftView = Theme.leftPaddingView(textFieldHeight: passwordTextField.frame.height)
         passwordTextField.leftViewMode = .always
+        passwordTextField.returnKeyType = .done
+        passwordTextField.delegate = self
         view.addSubview(passwordTextField)
         
         passwordTextField.snp.makeConstraints { make in
